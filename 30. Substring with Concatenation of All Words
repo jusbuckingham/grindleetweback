@@ -1,0 +1,31 @@
+class Solution:
+    def findSubstring(self, s: str, words: List[str]) -> List[int]:
+        if not s or not words:
+            return []
+        
+        word_count = {}
+        for word in words:
+            if word not in word_count:
+                word_count[word] = 0
+            word_count[word] += 1
+        
+        word_len = len(words[0])
+        n = len(s)
+        m = len(words)
+        result = []
+        
+        for i in range(n - m * word_len + 1):
+            seen = {}
+            for j in range(i, i + m * word_len, word_len):
+                sub_str = s[j:j+word_len]
+                if sub_str not in word_count:
+                    break
+                if sub_str not in seen:
+                    seen[sub_str] = 0
+                seen[sub_str] += 1
+                if seen[sub_str] > word_count[sub_str]:
+                    break
+            else:
+                result.append(i)
+                
+        return result
